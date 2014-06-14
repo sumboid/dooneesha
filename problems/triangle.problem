@@ -1,0 +1,17 @@
+// vim: set ft=scala:
+
+import looneesha._
+
+object TriangleProblem extends ProblemBuilder {
+  set (%Triangle_x, 10)
+  set (%Triangle_y, 10)
+  set (%Triangle_gamma, 60)
+  set (%Triangle_alpha, 60)
+
+  ? (%Triangle_p, %Triangle_s)
+}
+
+
+val runtime = Runtime(Triangle, TriangleProblem)
+runtime.init
+runtime.start

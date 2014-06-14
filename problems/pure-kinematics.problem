@@ -1,0 +1,17 @@
+// vim: set ft=scala:
+
+import looneesha._
+
+object PureKinematicsProblem extends ProblemBuilder {
+  set (%Kinematics_a, 3)
+  set (%Kinematics_v0, 10)
+  set (%Kinematics_s0, 0)
+  set (%Kinematics_dt, 10)
+
+  ? (%Kinematics_s1, %Kinematics_v1)
+}
+
+val runtime = Runtime(Kinematics, PureKinematicsProblem)
+runtime.visualize
+runtime.init
+runtime.start

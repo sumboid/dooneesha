@@ -1,0 +1,15 @@
+// vim: set ft=scala:
+
+import looneesha._
+
+object MechanicsProblem extends ProblemBuilder {
+  set (%Mechanics_m, 1.4)
+  set (%Mechanics_cf, 0.1)
+  set (%Mechanics_alpha, 0)
+
+  ? (%Mechanics_foa)
+}
+
+val runtime = Runtime(Mechanics, MechanicsProblem)
+runtime.init
+runtime.start

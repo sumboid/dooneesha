@@ -1,0 +1,99 @@
+// vim: set ft=scala:
+
+import looneesha._
+
+object TriangleDef extends CFDefinition {
+  override def mapping = Map("f1" -> ((in: List[AtomDF]) => (180 - in(0) - in(1)) :: Nil),
+                             "f2" -> ((in: List[AtomDF]) => (180 - in(0) - in(1)) :: Nil),
+                             "f3" -> ((in: List[AtomDF]) => (180 - in(0) - in(1)) :: Nil),
+
+                             "f4" -> ((in: List[AtomDF]) => ((in(0) + in(1) + in(2)) / 2) :: Nil),
+                             "f5" -> ((in: List[AtomDF]) => (in(0) * 2 - in(1) - in(2)) :: Nil),
+                             "f6" -> ((in: List[AtomDF]) => (in(0) * 2 - in(1) - in(2)) :: Nil),
+                             "f7" -> ((in: List[AtomDF]) => (in(0) * 2 - in(1) - in(2)) :: Nil),
+
+                             "f8" -> ((in: List[AtomDF]) => (in(0) * math.sin(in(1))) :: Nil),
+                             "f9" -> ((in: List[AtomDF]) => (in(0) * math.sin(in(1))) :: Nil),
+                             "f10" -> ((in: List[AtomDF]) => (in(0) * math.sin(in(1))) :: Nil),
+                             "f11" -> ((in: List[AtomDF]) => (in(0) * math.sin(in(1))) :: Nil),
+                             "f12" -> ((in: List[AtomDF]) => (in(0) * math.sin(in(1))) :: Nil),
+                             "f13" -> ((in: List[AtomDF]) => (in(0) * math.sin(in(1))) :: Nil),
+
+                             "f14" -> ((in: List[AtomDF]) => (in(0) * in(1) / 2) :: Nil),
+                             "f15" -> ((in: List[AtomDF]) => (in(0) * in(1) / 2) :: Nil),
+                             "f16" -> ((in: List[AtomDF]) => (in(0) * in(1) / 2) :: Nil),
+
+                             "f17" -> ((in: List[AtomDF]) => {
+                                 val p = (in(0) + in(1) + in(2)) / 2
+                                 val s = math.sqrt(p * (p - in(0)) * (p - in(1)) * (p - in(2)))
+                                 s :: Nil
+                             }),
+
+                             "f18" -> ((in: List[AtomDF]) => (in(0) / math.sin(in(1))) :: Nil),
+                             "f19" -> ((in: List[AtomDF]) => (in(0) / math.sin(in(1))) :: Nil),
+                             "f20" -> ((in: List[AtomDF]) => (in(0) / math.sin(in(1))) :: Nil),
+                             "f21" -> ((in: List[AtomDF]) => (in(0) / math.sin(in(1))) :: Nil),
+                             "f22" -> ((in: List[AtomDF]) => (in(0) / math.sin(in(1))) :: Nil),
+                             "f23" -> ((in: List[AtomDF]) => (in(0) / math.sin(in(1))) :: Nil),
+
+                             "f24" -> ((in: List[AtomDF]) => math.asin(in(0) / in(1)) :: Nil),
+                             "f25" -> ((in: List[AtomDF]) => math.asin(in(0) / in(1)) :: Nil),
+                             "f26" -> ((in: List[AtomDF]) => math.asin(in(0) / in(1)) :: Nil),
+                             "f27" -> ((in: List[AtomDF]) => math.asin(in(0) / in(1)) :: Nil),
+                             "f28" -> ((in: List[AtomDF]) => math.asin(in(0) / in(1)) :: Nil),
+                             "f29" -> ((in: List[AtomDF]) => math.asin(in(0) / in(1)) :: Nil),
+
+                             "f30" -> ((in: List[AtomDF]) => (2 * in(0) / in(1)) :: Nil),
+                             "f31" -> ((in: List[AtomDF]) => (2 * in(0) / in(1)) :: Nil),
+                             "f32" -> ((in: List[AtomDF]) => (2 * in(0) / in(1)) :: Nil),
+
+                             "f33" -> ((in: List[AtomDF]) => (2 * in(0) / in(1)) :: Nil),
+                             "f34" -> ((in: List[AtomDF]) => (2 * in(0) / in(1)) :: Nil),
+                             "f35" -> ((in: List[AtomDF]) => (2 * in(0) / in(1)) :: Nil))
+}
+
+object Triangle extends GraphBuilder(TriangleDef.mapping, "Triangle") {
+  defn f1 in (%alpha(* + 0), %beta(* + 0)) -> out (%gamma(* + 0))
+  defn f2 in (%alpha(* + 0), %gamma(* + 0)) -> out (%beta(* + 0))
+  defn f3 in (%beta(* + 0), %gamma(* + 0)) -> out (%alpha(* + 0))
+
+  defn f4 in (%x(* + 0), %y(* + 0), %z(* + 0)) -> out (%p(* + 0))
+  defn f5 in (%p(* + 0), %x(* + 0), %y(* + 0)) -> out (%z(* + 0))
+  defn f6 in (%p(* + 0), %x(* + 0), %z(* + 0)) -> out (%y(* + 0))
+  defn f7 in (%p(* + 0), %z(* + 0), %y(* + 0)) -> out (%x(* + 0))
+
+  defn f8 in (%y(* + 0), %gamma(* + 0)) -> out (%hx(* + 0))
+  defn f9 in (%z(* + 0), %beta(* + 0)) -> out (%hx(* + 0))
+  defn f10 in (%x(* + 0), %gamma(* + 0)) -> out (%hy(* + 0))
+  defn f11 in (%z(* + 0), %alpha(* + 0)) -> out (%hy(* + 0))
+  defn f12 in (%x(* + 0), %beta(* + 0)) -> out (%hz(* + 0))
+  defn f13 in (%y(* + 0), %alpha(* + 0)) -> out (%hz(* + 0))
+
+  defn f14 in (%x(* + 0), %hx(* + 0)) -> out (%s(* + 0))
+  defn f15 in (%y(* + 0), %hy(* + 0)) -> out (%s(* + 0))
+  defn f16 in (%z(* + 0), %hz(* + 0)) -> out (%s(* + 0))
+
+  defn f17 in (%x(* + 0), %y(* + 0), %z(* + 0)) -> out (%s(* + 0))
+
+  defn f18 in (%hx(* + 0), %gamma(* + 0)) -> out (%y(* + 0))
+  defn f19 in (%hx(* + 0), %beta(* + 0)) -> out (%z(* + 0))
+  defn f20 in (%hy(* + 0), %gamma(* + 0)) -> out (%x(* + 0))
+  defn f21 in (%hy(* + 0), %alpha(* + 0)) -> out (%z(* + 0))
+  defn f22 in (%hz(* + 0), %beta(* + 0)) -> out (%x(* + 0))
+  defn f23 in (%hz(* + 0), %alpha(* + 0)) -> out (%y(* + 0))
+
+  defn f24 in (%hx(* + 0), %y(* + 0)) -> out (%gamma(* + 0))
+  defn f25 in (%hx(* + 0), %z(* + 0)) -> out (%beta(* + 0))
+  defn f26 in (%hy(* + 0), %x(* + 0)) -> out (%gamma(* + 0))
+  defn f27 in (%hy(* + 0), %z(* + 0)) -> out (%alpha(* + 0))
+  defn f28 in (%hz(* + 0), %x(* + 0)) -> out (%beta(* + 0))
+  defn f29 in (%hz(* + 0), %y(* + 0)) -> out (%alpha(* + 0))
+
+  defn f30 in (%s(* + 0), %x(* + 0)) -> out(%hx(* + 0))
+  defn f31 in (%s(* + 0), %y(* + 0)) -> out(%hy(* + 0))
+  defn f32 in (%s(* + 0), %z(* + 0)) -> out(%hz(* + 0))
+
+  defn f33 in (%s(* + 0), %hx(* + 0)) -> out(%x(* + 0))
+  defn f34 in (%s(* + 0), %hy(* + 0)) -> out(%y(* + 0))
+  defn f35 in (%s(* + 0), %hz(* + 0)) -> out(%z(* + 0))
+}

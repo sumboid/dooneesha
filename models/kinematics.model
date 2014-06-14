@@ -1,0 +1,29 @@
+// vim: set ft=scala:
+
+import looneesha._
+
+object KinematicsDef extends CFDefinition {
+  override def mapping = Map("distance0" -> ((in: List[AtomDF]) => (in(0) + in(1) * in(3) + in(2) * in(3) * in(3) / 2) :: Nil),
+    "distance1" -> ((in: List[AtomDF]) => (in(0) - in(1) * in(3) - in(2) * in(3) * in(3) / 2) :: Nil),
+    "speed00" -> ((in: List[AtomDF]) => (in(0) + in(1) * in(2)) :: Nil),
+    "speed10" -> ((in: List[AtomDF]) => (in(0) - in(1) * in(2)) :: Nil),
+    "speed01" -> ((in: List[AtomDF]) => ((in(1) - in(0)) / in(3) - in(2) * in(3) / 2) :: Nil),
+    "deltaT0" -> ((in: List[AtomDF]) => ((in(1) - in(0)) / in(2)) :: Nil),
+    "accelerate0" -> ((in: List[AtomDF]) => ((in(1) - in(0)) / in(2)) :: Nil),
+    "accelerate1" -> ((in: List[AtomDF]) => ((in(1) - in(0)) / in(3) / in(3) - in(2) / in(3)) :: Nil))
+}
+
+object Kinematics extends GraphBuilder(KinematicsDef.mapping, "Kinematics") {
+  defn distance0 in (%s0(* + 0), %v0(* + 0), %a(* + 0), %dt(* + 0)) -> out (%s1(* + 0))
+  defn distance1 in (%s1(* + 0), %v0(* + 0), %a(* + 0), %dt(* + 0)) -> out (%s0(* + 0))
+
+  defn speed00 in (%v0(* + 0), %a(* + 0), %dt(* + 0)) -> out (%v1(* + 0))
+  defn speed10 in (%v1(* + 0), %a(* + 0), %dt(* + 0)) -> out (%v0(* + 0))
+  defn speed01 in (%s0(* + 0), %s1(* + 0), %a(* + 0), %dt(* + 0)) -> out(%v0(* + 0))
+
+  defn deltaT0 in (%v0(* + 0), %v1(* + 0), %a(* + 0)) -> out (%dt(* + 0))
+
+  defn accelerate0 in (%v0(* + 0), %v1(* + 0), %dt(* + 0)) -> out(%a(* + 0))
+  defn accelerate1 in (%s0(* + 0), %s1(* + 0), %v0(* + 0), %dt(* + 0)) -> out(%a(* + 0))
+}
+

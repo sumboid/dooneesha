@@ -1,0 +1,41 @@
+// vim: set ft=scala:
+
+import looneesha._
+
+object MechanicsDef extends CFDefinition {
+  override def mapping = Map("frictionF" -> ((in: List[AtomDF]) => (in(0) * in(1)) :: Nil),
+    "reactionF" -> ((in: List[AtomDF]) => -in(0) :: Nil),
+    "gravitationFY" -> ((in: List[AtomDF]) => (in(1) * 9.8 * math.cos(in(0))) :: Nil),
+    "gravitationFX" -> ((in: List[AtomDF]) => (in(1) * 9.8 * math.sin(in(0))) :: Nil),
+    "overallF" -> ((in: List[AtomDF]) => (in(0) + in(1)) :: Nil),
+    "accelerate" -> ((in: List[AtomDF]) => (in(0) / in(1)) :: Nil),
+    "overallF0" -> ((in: List[AtomDF]) => (in(0) * in(1)) :: Nil),
+    "reactionF0" -> ((in: List[AtomDF]) => (in(1) / in(0)) :: Nil),
+    "coeffriction" -> ((in: List[AtomDF]) => (in(1) / in(0)) :: Nil),
+    "gravitationFY0" -> ((in: List[AtomDF]) => (in(0)) :: Nil),
+    "mass0" -> ((in: List[AtomDF]) => (in(0) / in(1)) :: Nil),
+    "frictionF0" -> ((in: List[AtomDF]) => (in(0) - in(1)) :: Nil),
+    "gravitaionFX0" -> ((in: List[AtomDF]) => (in(0) - in(1)) :: Nil)) 
+}
+
+
+object Mechanics extends GraphBuilder(MechanicsDef.mapping, "Mechanics") {
+  defn frictionF in (%cf(* + 0), %fr(* + 0)) -> out (%ff(* + 0))
+  defn reactionF in (%fgy(* + 0)) -> out (%fr(* + 0))
+
+  defn gravitationFY in (%alpha(* + 0), %m(* + 0)) -> out (%fgy(* + 0))
+  defn gravitationFX in (%alpha(* + 0), %m(* + 0)) -> out (%fgx(* + 0))
+
+  defn overallF in (%fgx(* + 0), %ff(* + 0)) -> out (%foa(* + 0))
+  defn accelerate in (%foa(* + 0), %m(* + 0)) -> out (%Kinematics_a(* + 0))
+
+  defn overallF0 in (%Kinematics_a(* + 0), %m(* + 0)) -> out (%foa(* + 0))
+  defn reactionF0 in (%cff(* + 0), %ff(* + 0)) -> out (%fr(* + 0))
+  defn coeffriction in (%fr(* + 0), %ff(* + 0)) -> out (%cf(* + 0))
+  defn gravitationFY0 in (%fr(* + 0)) -> out (%fgy(* + 0))
+  defn mass0 in (%foa(* + 0), %Kinematics_a(* + 0)) -> out(%m(* + 0))
+  defn frictionF0 in (%foa(* + 0), %fgx(* + 0)) -> out (%ff(* + 0))
+  defn gravitaionFX0 in (%foa(* + 0), %ff(* + 0)) -> out (%fgx(* + 0))
+}
+
+

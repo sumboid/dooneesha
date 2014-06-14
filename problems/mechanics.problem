@@ -1,0 +1,60 @@
+// vim: set ft=scala:
+
+import looneesha._
+
+object MechanicsProblem extends ProblemBuilder {
+  set (%Kinematics_v0(0), 10)
+  set (%Kinematics_v1(0), 0)
+  set (%Kinematics_s0(0), 0)
+
+  set (%Mechanics_m(0), 10)
+  set (%Mechanics_cf(0), 0.1)
+  set (%Mechanics_alpha(0), 0)
+
+  ? (%Kinematics_s1(0), %Kinematics_dt(0))
+
+  set (%Kinematics_v0(1), 20)
+  set (%Kinematics_v1(1), 0)
+  set (%Kinematics_s0(1), 0)
+
+  set (%Mechanics_m(1), 100)
+  set (%Mechanics_cf(1), 0.05)
+  set (%Mechanics_alpha(1), 0)
+
+  ? (%Kinematics_s1(1), %Kinematics_dt(1))
+
+  set (%Kinematics_v0(2), 15)
+  set (%Kinematics_v1(2), 0)
+  set (%Kinematics_s0(2), 0)
+
+  set (%Mechanics_m(2), 50)
+  set (%Mechanics_cf(2), 0.03)
+  set (%Mechanics_alpha(2), 0.01)
+
+  ? (%Kinematics_s1(2), %Kinematics_dt(2))
+
+  set (%Kinematics_v0(3), 40)
+  set (%Kinematics_v1(3), 0)
+  set (%Kinematics_s0(3), 0)
+
+  set (%Mechanics_m(3), 130)
+  set (%Mechanics_cf(3), 0.025)
+  set (%Mechanics_alpha(3), 0)
+
+  ? (%Kinematics_s1(3), %Kinematics_dt(3))
+
+  set (%Kinematics_v0(4), 50)
+  set (%Kinematics_v1(4), 0)
+  set (%Kinematics_s0(4), 0)
+
+  set (%Mechanics_m(4), 200)
+  set (%Mechanics_cf(4), 0.2)
+  set (%Mechanics_alpha(4), 0)
+
+  ? (%Kinematics_s1(4), %Kinematics_dt(4))
+}
+
+val runtime = Runtime(Kinematics + Mechanics, MechanicsProblem)
+runtime.visualize
+runtime.init
+runtime.start
