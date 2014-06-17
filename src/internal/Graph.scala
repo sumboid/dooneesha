@@ -38,6 +38,8 @@ case class Graph(cfs: List[CF]) {
     result
   }
 
+  def subgraph = Graph(cfs)
+
   def paths(in: List[AtomDF], out: AtomDF): List[Graph] = paths(in, out :: Nil)
   def subgraph(in: List[AtomDF], out: List[AtomDF]) = Graph(paths(in, out) flatMap (_.cfs))
 
