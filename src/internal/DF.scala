@@ -8,7 +8,7 @@ trait DF extends Fragment {
   }
 }
 
-case class AtomDF(name: String, index: Integer = 0, value: Double = 0, defined: Boolean = false) extends DF {
+case class AtomDF(name: String, index: Int = 0, value: Double = 0, defined: Boolean = false) extends DF {
   override def equals (other: Any) = other match {
     case x: AtomDF => this.name == x.name && this.index == x.index
     case _ => false
@@ -18,13 +18,9 @@ case class AtomDF(name: String, index: Integer = 0, value: Double = 0, defined: 
   override def toString = name + "(" + index + ")"
 }
 
-case class MigratedDF(df: AtomDF) {
-  override def equals(other: Any) = other match {
-    case x: MigratedDF => this.df == x.df
-    case _ => false
-  }
-}
-
 case class MetaDF(name: String, metaindex: Int) extends DF {
-  def createAtomDF(ind: Int) = AtomDF(name, ind + metaindex)
+  def createAtomDF(ind: Int) = ind + metaindex >= 0 match {
+    case true => Some(AtomDF(name, ind + metaindex))
+    case false => None
+  }
 }

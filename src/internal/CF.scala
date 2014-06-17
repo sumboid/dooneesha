@@ -32,16 +32,20 @@ case class MetaCF(name: String,
   in: List[DF],
   out: List[DF]) extends CF {
 
-  def createAtomCF(df: DF) = {
+  def createAtomCF(df: DF): Option[AtomCF] = {
     val neededDF = (out find (_ == df)).get.asInstanceOf[MetaDF]
     val startInd = df.asInstanceOf[AtomDF].index - neededDF.metaindex
-    val concreteIn = in map (df => df match
-      { case x: AtomDF => x.asInstanceOf[AtomDF]
-        case x: MetaDF => x.createAtomDF(startInd)})
+    val concreteIn = in map (df => df match {
+      case x: AtomDF => Some(x.asInstanceOf[AtomDF])
+      case x: MetaDF => x.createAtomDF(startInd)
+    })
 
-    val conсreteOut = out map (df => df match
-      { case x: AtomDF => x.asInstanceOf[AtomDF]
-        case x: MetaDF => x.createAtomDF(startInd) })
-    AtomCF(name, func, concreteIn, conсreteOut)
+    val concreteOut = out map (df => df match {
+      case x: AtomDF => Some(x.asInstanceOf[AtomDF])
+      case x: MetaDF => x.createAtomDF(startInd)
+    })
+
+    if(concreteIn.contains(None) || concreteOut.contains(None)) { None }
+    else { Some(AtomCF(name, func, concreteIn map (_.get), concreteOut map (_.get))) }
   }
 }

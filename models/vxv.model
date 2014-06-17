@@ -1,0 +1,20 @@
+// vim: set ft=scala:
+
+import looneesha._
+
+object VXVDef extends CFDefinition {
+  override def mapping = Map("mult" -> ((in: List[AtomDF]) => (in(0) * in(1)) :: Nil),
+                             "sum" -> ((in: List[AtomDF]) => (in(0) + in(1)) :: Nil),
+                             "inita" -> ((in: List[AtomDF]) => (1) :: Nil),
+                             "initb" -> ((in: List[AtomDF]) => (2) :: Nil),
+                             "copy" -> ((in: List[AtomDF]) => (in(0)) :: Nil))
+}
+
+
+object VXV extends GraphBuilder(VXVDef.mapping, "vxv") {
+  defn mult in (%a(* + 0), %b(* + 0)) -> out (%p(* + 0))
+  defn sum in (%c(* + 0), %p(* + 1)) -> out(%c(* + 1))
+  defn inita in () -> out (%a(* + 0))
+  defn initb in () -> out (%b(* + 0))
+  defn copy in (%p) -> out (%c)
+}

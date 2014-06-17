@@ -1,0 +1,12 @@
+import looneesha._
+
+object VXVProblem extends ProblemBuilder {
+  ? (%vxv_c(5))
+}
+
+val needed = AtomDF("vxv_c", 0) :: AtomDF("vxv_c", 1) :: AtomDF("vxv_c", 2) :: AtomDF("vxv_c", 3) :: AtomDF("vxv_c", 4) :: AtomDF("vxv_c", 5) :: AtomDF("vxv_a", 0) :: AtomDF("vxv_a", 1) :: AtomDF("vxv_a", 2) :: AtomDF("vxv_a", 3) :: AtomDF("vxv_a", 4) :: AtomDF("vxv_a", 5) :: AtomDF("vxv_b", 0) :: AtomDF("vxv_b", 1) :: AtomDF("vxv_b", 2) :: AtomDF("vxv_b", 3) :: AtomDF("vxv_b", 4) :: AtomDF("vxv_b", 5) :: AtomDF("vxv_p", 0) :: AtomDF("vxv_p", 1) :: AtomDF("vxv_p", 2) :: AtomDF("vxv_p", 3) :: AtomDF("vxv_p", 4) :: AtomDF("vxv_p", 5) :: Nil
+val runtime = Runtime(VXV, needed)
+runtime.init
+runtime.start
+val yoba = VXVProblem
+yoba.dfs foreach (runtime ! _)
