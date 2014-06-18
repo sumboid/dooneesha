@@ -4,6 +4,8 @@ version := "0.0.1"
 
 scalaSource in Compile <<= baseDirectory(_ / "src")
 
-libraryDependencies += "org.scala-lang" % "scala-actors" % "2.10.3"
+resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
+
+libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.3"
 
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.10.1")

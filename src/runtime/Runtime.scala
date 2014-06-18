@@ -1,22 +1,19 @@
 package looneesha
 
-import scala.actors.Actor
+import akka.actor.Actor
+import akka.actor.Props
+import akka.actor.ActorSystem
 
-class Worker(system: Runtime) extends Actor {
-  def act = {
-    loop {
-      react {
-        case cf: AtomCF => cf.run foreach (system ! _)
-      }
-    }
+class Worker extends Actor {
+  def receive = {
+    case cf: AtomCF => cf.run foreach (sender ! _)
   }
 }
 
 class Runtime(graph: Graph, needed: List[AtomDF]) extends Actor {
   var cfs: List[(AtomCF, Boolean)] = Nil
   var kdfs: List[AtomDF] = Nil
-  val worker = new Worker(this)
-  worker.start
+  val worker = context.actorOf(Props[Worker], name = "worker")
 
   def tryCompute = {
     var acfs = cfs.toArray
@@ -45,19 +42,15 @@ class Runtime(graph: Graph, needed: List[AtomDF]) extends Actor {
     cfs = acfs.toList
   }
 
-  def act = {
-    loop {
-      react {
-        case df: AtomDF => {
-          println("Look! " + df + " = " + df.value)
-          kdfs ::= df
-          tryCompute
-        }
-      }
+  def receive = {
+    case df: AtomDF => {
+      println("Look! " + df + " = " + df.value)
+      kdfs ::= df
+      tryCompute
     }
   }
 
-  def init = {
+  override def preStart = {
     println("Initializing")
     graph.subgraph(needed) foreach (cf => cfs ::= cf -> false)
     tryCompute
@@ -65,5 +58,8 @@ class Runtime(graph: Graph, needed: List[AtomDF]) extends Actor {
 }
 
 object Runtime {
-  def apply(g: GraphBuilder, n: List[AtomDF]) = new Runtime(g.get, n)
+  def apply(g: GraphBuilder, n: List[AtomDF]) = {
+    val context = ActorSystem("Dooneesha")
+    context.actorOf(Props(classOf[Runtime], g.get, n), name = "runtime")
+  }
 }
